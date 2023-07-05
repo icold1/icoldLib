@@ -133,7 +133,7 @@ using Vec = Point<T>;//Vec 二维向量
 ```c++
 template<typename T>
 	requires (::std::integral<T> || ::std::floating_point<T>)
-class Line
+class Line;
 ```
 
 #### 构造函数
