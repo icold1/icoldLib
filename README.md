@@ -92,7 +92,7 @@ friend ::std::ostream& operator<<(::std::ostream& out, const Point<T>& point_Out
 
 ```c++
 template<typename Ti> requires (::std::integral<T> || ::std::floating_point<T>)
-operator Point<Ti>;
+operator Point<Ti>();
 ```
 
 #### 成员函数
@@ -107,7 +107,7 @@ constexpr T getY()const;
 void setX(T x);
 void setY(T y);
 void moveTo(T x, T y);
-void moveTo(const Point<T>& p)
+void moveTo(const Point<T>& p);
 ```
 
 #### 其他函数
@@ -167,7 +167,7 @@ friend ::std::ostream& operator<<(::std::ostream& out, const Line<T>& line_Out);
 
 ```c++
 template<typename Ti>
-operator Line<Ti>;
+operator Line<Ti>();
 ```
 
 #### 成员函数
