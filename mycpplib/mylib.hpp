@@ -12,9 +12,9 @@
 /* * * * * * -- !!不要随便修改文件包含顺序!! --* * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "pri_type_traits.hpp"
-#include "comp.hpp"
-#include "basic_graph.hpp"
-#include "output.hpp"
+#include "mylib/pri_type_traits.hpp"
+#include "mylib/comp.hpp"
+#include "mylib/basic_graph.hpp"
+#include "mylib/output.hpp"
 
 #endif //_MYLIB_
