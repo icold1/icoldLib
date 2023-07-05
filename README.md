@@ -174,9 +174,9 @@ operator Line<Ti>;
 
 ```c++
 constexpr auto length()const;
-void translation(T vx, T vy);			//平移
-void translation(const Vec<T>& vec);	//平移
-void rotate(const Point<T>& center_point, long double rot);//以center_point为中心旋转rot弧度
+void translation(T vx, T vy);					//平移
+void translation(const Vec<T>& vec);				//平移
+void rotate(const Point<T>& center_point, long double rot);	//以center_point为中心旋转rot弧度
 constexpr Point<T> getBegin()const;
 constexpr Point<T> getEnd()const;
 void moveBeginTo(Point<T>& point);
@@ -234,16 +234,16 @@ Ellipse<T>& operator=(const Ellipse<T>&) = default;
 #### 成员函数
 
 ```c++
-constexpr Point<T> getCenter()const;			//获取中心点
-constexpr T getaxisLong()const;					//获取长轴长
-constexpr T getaxisShort()const;				//获取短轴长
-constexpr long double getFocalLen()const;		//获得焦距
+constexpr Point<T> getCenter()const;		//获取中心点
+constexpr T getaxisLong()const;			//获取长轴长
+constexpr T getaxisShort()const;		//获取短轴长
+constexpr long double getFocalLen()const;	//获得焦距
 constexpr long double getEccentricity()const;	//获得离心率
 void moveCenter(Point<T> point);
 void moveCenter(T x, T y);
-void alteraxisLong(T length);					//改变长轴
-void alteraxisShort(T length);					//改变短轴
-void rotateTo(Vec<T> vec);						//修改旋转向量
+void alteraxisLong(T length);			//改变长轴
+void alteraxisShort(T length);			//改变短轴
+void rotateTo(Vec<T> vec);			//修改旋转向量
 ```
 
 ### 4.Circular类
@@ -289,12 +289,12 @@ friend ::std::ostream& operator<<(::std::ostream& os, const Circular<Ti>& ocir);
 
 ```c++
 constexpr Point<T> getCenter()const;	//获得圆心
-constexpr T getRadius()const;			//获得半径
+constexpr T getRadius()const;		//获得半径
 void moveCenter(Point<T> point);
 void moveCenter(T x, T y);
-void alterRadius(T radius);				//修改圆心
+void alterRadius(T radius);		//修改圆心
 long double getCircumference()const;	//获得周长
-long double getArea()const;				//获得面积
+long double getArea()const;		//获得面积
 ```
 
 #### 其他函数
@@ -341,10 +341,10 @@ void print(const ::std::wstring_view fmt_str, Args&&... args);
 ```c++
 void printc(const ::std::string& t);		//输出单个string
 
-void printc(const char* t);					//输出单个字符串
+void printc(const char* t);			//输出单个字符串
 
 template<::std::ranges::range T>
-void printc(const T& t);					//输出可迭代范围，如vector、array等，要求：C++20
+void printc(const T& t);			//输出可迭代范围，如vector、array等，要求：C++20
 
 template<typename T, typename...Args>
 	requires requires(T t,Args...args){
@@ -355,5 +355,5 @@ void printc(const T& t, Args&&...args);		//输出可变参数，要求：C++20
 
 template<typename...Args>
 typename ::std::enable_if_t <(is_Printable_v<Args> && ...)>
-	printc(Args&&...args);					//输出可变参数，要求：C++17
+	printc(Args&&...args);			//输出可变参数，要求：C++17
 ```
