@@ -375,9 +375,9 @@ namespace myLib {
 		Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c) :_a(a), _b(b), _c(c) {}
 		Triangle(const Triangle&) = default;
 		Triangle(Triangle&&) = default;
-		Point<T> getPointA()const { return _a; }
-		Point<T> getPointB()const { return _b; }
-		Point<T> getPointC()const { return _c; }
+		constexpr Point<T> getPointA()const { return _a; }
+		constexpr Point<T> getPointB()const { return _b; }
+		constexpr Point<T> getPointC()const { return _c; }
 	};
 
 
@@ -397,10 +397,10 @@ namespace myLib {
 		}
 		Rectangle(const Rectangle&) = default;
 		Rectangle(Rectangle&&) = default;
-		constexpr getLeft()const { return _left; }
-		constexpr getRight()const { return _right; }
-		constexpr getTop()const { return _top; }
-		constexpr getBottom()const { return _bottom; }
+		constexpr T getLeft()const { return _left; }
+		constexpr T getRight()const { return _right; }
+		constexpr T getTop()const { return _top; }
+		constexpr T getBottom()const { return _bottom; }
 
 	};
 }
