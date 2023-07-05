@@ -110,6 +110,9 @@ namespace myLib {
 		}
 		constexpr Line(const Line&) = default;
 		constexpr Line(Line&&) = default;
+		Line<T>& operator=(const Line<T>&) = default;
+		template<typename T1, typename T2>
+		friend constexpr bool operator==(const Line<T1>& l1, const Line<T2>& l2);
 		constexpr auto length()const {
 			return pointDistance(_beg, _end);
 		}
@@ -144,6 +147,10 @@ namespace myLib {
 		void moveBeginTo(T x, T y) { _beg = Point{ x,y }; }
 		void moveEndTo(Point<T>& point) { _end = point; }
 		void moveEndTo(T x, T y) { _end = Point{ x,y }; }
+		template<typename T1>
+		operator Line<T1>() {
+			return Line<T1>(static_cast<T1>(this->_beg), static_cast<T1>(this->_end));
+		}
 		template<typename T>
 		friend ::std::ostream& operator<<(::std::ostream& out, const Line<T>& line_Out);
 	};
@@ -153,6 +160,10 @@ namespace myLib {
 	Line(T1&&,T2&&,T3&&,T4&&) -> Line<::std::common_type_t<T1, T2, T3, T4>>;
 
 
+	template<typename T1, typename T2>
+	constexpr bool operator==(const Line<T1>& l1, const Line<T2>& l2) {
+		return l1._beg == l2._beg && l1._end == l2._end;
+	}
 	template<typename T1, typename T2>
 	constexpr bool is_Parallel(const Line<T1>& L1, const Line<T2>& L2) {
 		if (long double ll1 = L1.length(), ll2 = L2.length(); !(_cmp_equal(ll1, 0) || _cmp_equal(ll2, 0))) {
@@ -215,6 +226,7 @@ namespace myLib {
 		constexpr Ellipse(const Point<T>& center, T a, T b, Vec<T> vec = {}) :_center(center), _a(a), _b(b), _vec(vec) {}
 		constexpr Ellipse(const Ellipse&) = default;
 		constexpr Ellipse(Ellipse&&) = default;
+		Ellipse<T>& operator=(const Ellipse<T>&) = default;
 		constexpr Point<T> getCenter()const { return _center; }	//获取中心点
 		/*获得长轴长*/
 		constexpr T getaxisLong()const { return _a; }
@@ -251,6 +263,7 @@ namespace myLib {
 		constexpr Circular(const Point<T>& center, T r = {}) :Ellipse<T>(center, r, r) {}
 		constexpr Circular(const Circular<T>&) = default;
 		constexpr Circular(Circular<T>&&) = default;
+		Circular<T>& operator=(const Circular<T>&) = default;
 		using Ellipse<T>::getCenter;
 		constexpr T getRadius()const { return _radius; }
 		using Ellipse<T>::moveCenter;
