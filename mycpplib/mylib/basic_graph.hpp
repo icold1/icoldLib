@@ -200,6 +200,9 @@ namespace myLib {
 		Point<T2> base = L2._end - L2._beg;
 		long double d1 = ::abs(cross(L2._beg, L2._end, L1._beg));
 		auto d2 = ::abs(cross(L2._beg, L2._end, L1._end));
+		if (_cmp_equal(d1 + d2, 0)) {
+			throw ::std::invalid_argument("³ý 0 ´íÎó");
+		}
 		long double t = d1 / (d1 + d2);
 		return L1._beg + (L1._end - L1._beg) * t;
 	}
@@ -384,13 +387,17 @@ namespace myLib {
 		Point<T> _a, _b, _c;
 
 	public:
-		Triangle() :_a(), _b(), _c() {}
-		Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c) :_a(a), _b(b), _c(c) {}
-		Triangle(const Triangle&) = default;
-		Triangle(Triangle&&) = default;
+		constexpr Triangle() :_a(), _b(), _c() {}
+		constexpr Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c) :_a(a), _b(b), _c(c) {}
+		constexpr Triangle(const Triangle&) = default;
+		constexpr Triangle(Triangle&&) = default;
+		Triangle<T>& operator=(const Triangle<T>&) = default;
 		constexpr Point<T> getPointA()const { return _a; }
 		constexpr Point<T> getPointB()const { return _b; }
 		constexpr Point<T> getPointC()const { return _c; }
+		constexpr Line<T> getEdgeA()const { return Line<T>(_b, _c); }
+		constexpr Line<T> getEdgeB()const { return Line<T>(_a, _c); }
+		constexpr Line<T> getEdgeC()const { return Line<T>(_a, _b); }
 		void movePointATo(const Point<T>& p) { _a = p; }
 		void movePointBTo(const Point<T>& p) { _b = p; }
 		void movePointCTo(const Point<T>& p) { _c = p; }
@@ -413,11 +420,24 @@ namespace myLib {
 			T _z1 = _b.getY() - _c.getY(), _z2 = _c.getY() - _a.getY(), _z3 = _a.getY() - _b.getY();
 			return 0.5 * (_a.getX() * _z1 + _b.getX() * _z2 + _c.getX() * _z3);
 		}
+		Circular<long double> getCircumcircle()const {
+			if (_cmp_equal(cross(_a, _b, _c), 0)) {
+				throw ::std::invalid_argument("³ý 0 ´íÎó");
+			}
+			auto _tmp1 = _b.getX() * _b.getX() + _b.getY() * _b.getY();
+			auto _tmp2 = _tmp1 - _a.getX() * _a.getX() - _a.getY() * _a.getY();
+			auto _tmp3 = _c.getX() * _c.getX() + _c.getY() * _c.getY() - _tmp1;
+			long double _tmp4 = 2 * (_c.getY() - _b.getY()) * (_b.getX() - _a.getX()) - 2 * (_b.getY() - _a.getY()) * (_c.getX() - _b.getX());
+			long double _px = ((_c.getY() - _b.getY()) * _tmp2 - (_b.getY() - _a.getY()) * _tmp3) / _tmp4;
+			long double _py = ((_b.getX() - _a.getX()) * _tmp3 - (_c.getX() - _b.getX()) * _tmp2) / _tmp4;
+			long double _r = ::std::hypot(_px - _a.getX(), _py - _a.getY());
+			return Circular<long double>(Point<long double>(_px, _py), _r);
+		}
 		template<typename Ti>
 		constexpr bool operator==(const Triangle<Ti>& t)const {
 			return this->_a == t._a && this->_b == t._b && this->_c == t._c;
 		}
-		template<typename T1, typename T2, typename Tc = ::std::common_type_t<T1, T2>>
+		template<typename T1, typename T2, typename Tc>
 		friend Line<Tc> getSameEdge(const Triangle<T1>& t1, const Triangle<T2>& t2);
 		template<typename Ti>
 		operator Triangle<Ti>() {
@@ -473,23 +493,23 @@ namespace myLib {
 		return Line<Tc>{};
 	}
 
-
+	/* * * * * --  RectangleÀà  -- * * * * */
 	template<typename T>
 		requires (::std::integral<T> || ::std::floating_point<T>)
 	class Rectangle {
 		T _left, _right, _top, _bottom;
 
 	public:
-		Rectangle() :_left(), _right(), _top(), _bottom() {}
-		Rectangle(T left, T right, T top, T bottom) :_left(left), _right(right), _top(top), _bottom(bottom) {}
-		Rectangle(const Triangle<T>& tri) {
+		constexpr Rectangle() :_left(), _right(), _top(), _bottom() {}
+		constexpr Rectangle(T left, T right, T top, T bottom) :_left(left), _right(right), _top(top), _bottom(bottom) {}
+		constexpr Rectangle(const Triangle<T>& tri) {
 			_left = ::std::min({ tri.getPointA().getX(),tri.getPointB().getX(),tri.getPointC().getX() });
 			_right = ::std::max({ tri.getPointA().getX(),tri.getPointB().getX(),tri.getPointC().getX() });
 			_top = ::std::min({ tri.getPointA().getY(),tri.getPointB().getY(),tri.getPointC().getY() });
 			_bottom = ::std::max({ tri.getPointA().getY(),tri.getPointB().getY(),tri.getPointC().getY() });
 		}
-		Rectangle(const Rectangle&) = default;
-		Rectangle(Rectangle&&) = default;
+		constexpr Rectangle(const Rectangle&) = default;
+		constexpr Rectangle(Rectangle&&) = default;
 		constexpr T getLeft()const { return _left; }
 		constexpr T getRight()const { return _right; }
 		constexpr T getTop()const { return _top; }

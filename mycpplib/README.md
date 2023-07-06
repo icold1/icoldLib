@@ -198,6 +198,8 @@ template<typename T1, typename T2>
 constexpr auto getDisPointToLine(const Point<T1>& p, const Line<T2>& l);//点到直线距离
 ```
 
+**！！！注：在 `getcrossPoint` 函数中可能会有除0错误异常，一般是由于两线段共线造成的 ！！！**
+
 ### 3.Ellipse类
 
 #### 声明
@@ -314,9 +316,72 @@ template<typename T1,typename T2>
 constexpr RealatLine_Circle getRealatLineCir(const Line<T1>& l, const Circular<T2>& c);//获得直线与圆的位置关系
 ```
 
+### 5.Triangle类
+
+#### 声明
+
+```c++
+template<typename T>
+	requires (::std::integral<T> || ::std::floating_point<T>)
+class Triangle
+```
+
+#### 构造函数
+
+```c++
+constexpr Triangle();
+constexpr Triangle(const Point<T>& a, const Point<T>& b, const Point<T>& c);
+constexpr Triangle(const Triangle&) = default;
+constexpr Triangle(Triangle&&) = default;
+```
+
+#### 赋值运算符
+
+```c++
+Triangle<T>& operator=(const Triangle<T>&) = default;
+```
+
+#### 运算符
+
+```c++
+template<typename Ti>
+constexpr bool operator==(const Triangle<Ti>& t)const;
+```
+
+#### 转换运算符
+
+```c++
+template<typename Ti>
+operator Triangle<Ti>();
+```
+
+#### 成员函数
+
+```c++
+constexpr Point<T> getPointA()const;
+constexpr Point<T> getPointB()const;
+constexpr Point<T> getPointC()const;
+constexpr Line<T> getEdgeA()const;
+constexpr Line<T> getEdgeB()const;
+constexpr Line<T> getEdgeC()const;
+void movePointATo(const Point<T>& p);
+void movePointBTo(const Point<T>& p);
+void movePointCTo(const Point<T>& p);
+bool movePointToPoint(const Point<T>& Src, const Point<T>& Des);
+constexpr long double getArea()const;
+Circular<long double> getCircumcircle()const;
+```
+
+**！！！注：在 `getCircumcircle` 函数中可能会有除0错误异常，一般是由于三角形的三点共线造成的**
+
+#### 其他函数
+
+```c++
+template<typename T1, typename T2, typename Tc = ::std::common_type_t<T1, T2>>
+friend Line<Tc> getSameEdge(const Triangle<T1>& t1, const Triangle<T2>& t2);
+```
+
 **未完待续。。。**
-
-
 
 ## 输出库 —— output.hpp
 

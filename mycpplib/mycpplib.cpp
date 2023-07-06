@@ -4,7 +4,7 @@ using namespace myLib;
 
 int main()
 {
-	Point a(1, 2), b (3, 4);
-	Point c(1, 2.);
-	printc("test", 1, 2., Line(a,b)==Line(c,b));
+	Point a(0, 0), b(5, 0), c(12,0);
+	Triangle tri1{ a,b,c };
+	printc(tri1.getCircumcircle(), "area:",tri1.getArea());
 }
