@@ -377,7 +377,7 @@ namespace myLib {
 		}
 	}
 
-
+	/* * * * * --  Triangle¿‡  -- * * * * */
 	template<typename T>
 		requires (::std::integral<T> || ::std::floating_point<T>)
 	class Triangle {
@@ -391,7 +391,87 @@ namespace myLib {
 		constexpr Point<T> getPointA()const { return _a; }
 		constexpr Point<T> getPointB()const { return _b; }
 		constexpr Point<T> getPointC()const { return _c; }
+		void movePointATo(const Point<T>& p) { _a = p; }
+		void movePointBTo(const Point<T>& p) { _b = p; }
+		void movePointCTo(const Point<T>& p) { _c = p; }
+		bool movePointToPoint(const Point<T>& Src, const Point<T>& Des) {
+			if (Src == _a) {
+				_a = Des;
+				return true;
+			}
+			else if (Src == _b) {
+				_b = Des;
+				return true;
+			}
+			else if (Src == _c) {
+				_c = Des;
+				return true;
+			}
+			return false;
+		}
+		constexpr long double getArea()const {
+			T _z1 = _b.getY() - _c.getY(), _z2 = _c.getY() - _a.getY(), _z3 = _a.getY() - _b.getY();
+			return 0.5 * (_a.getX() * _z1 + _b.getX() * _z2 + _c.getX() * _z3);
+		}
+		template<typename Ti>
+		constexpr bool operator==(const Triangle<Ti>& t)const {
+			return this->_a == t._a && this->_b == t._b && this->_c == t._c;
+		}
+		template<typename T1, typename T2, typename Tc = ::std::common_type_t<T1, T2>>
+		friend Line<Tc> getSameEdge(const Triangle<T1>& t1, const Triangle<T2>& t2);
+		template<typename Ti>
+		operator Triangle<Ti>() {
+			return Triangle<Ti>(static_cast<Ti>(this->_a), static_cast<Ti>(this->_b), static_cast<Ti>(this->_c));
+		}
 	};
+	template<typename T1, typename T2, typename T3>
+	Triangle(const Point<T1>&, const Point<T2>&, const Point<T3>&) -> Triangle<::std::common_type_t<T1, T2, T3>>;
+
+	template<typename T1, typename T2, typename Tc = ::std::common_type_t<T1,T2>>
+	Line<Tc> getSameEdge(const Triangle<T1>& t1, const Triangle<T2>& t2) {
+		if (t1._a == t2._a) {
+			if (t1._b == t2._b || t1._b == t2._c) {
+				return Line<Tc>(t1._a, t1._b);
+			}
+			else if (t1._c == t2._b || t1._c == t2._c) {
+				return Line<Tc>(t1._a, t1._c);
+			}
+		}
+		else if (t1._a == t2._b) {
+			if (t1._b == t2._a || t1._b == t2._c) {
+				return Line<Tc>(t1._a, t1._b);
+			}
+			else if (t1._c == t2._a || t1._c == t2._c) {
+				return Line<Tc>(t1._a, t1._c);
+			}
+		}
+		else if (t1._a == t2._c) {
+			if (t1._b == t2._a || t1._b == t2._b) {
+				return Line<Tc>(t1._a, t1._b);
+			}
+			else if (t1._c == t2._a || t1._c == t2._b) {
+				return Line<Tc>(t1._a, t1._c);
+			}
+		}
+		else {
+			if (t1._b == t2._a) {
+				if (t1._c == t2._b || t1._c == t2._c) {
+					return Line<Tc>(t1._b, t1._c);
+				}
+			}
+			else if (t1._b == t2._b) {
+				if (t1._c == t2._a || t1._c == t2._c) {
+					return Line<Tc>(t1._b, t1._c);
+				}
+			}
+			else if (t1._b == t2._c) {
+				if (t1._c == t2._b || t1._c == t2._a) {
+					return Line<Tc>(t1._b, t1._c);
+				}
+			}
+		}
+		return Line<Tc>{};
+	}
 
 
 	template<typename T>
